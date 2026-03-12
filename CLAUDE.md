@@ -3,11 +3,17 @@
 This file provides guidance to Claude Code (claude.ai/code) when working with
 code in this repository.
 
+## IMPORTANT: Public Repository
+
+This is a public repo. Never commit secrets, API keys, tokens, internal URLs,
+endpoints, or any sensitive information. All secrets must be passed via GitHub
+Actions secrets and referenced as input variables. Always review changes before
+committing to ensure nothing sensitive is leaked.
+
 ## What This Is
 
-A GitHub Action (JavaScript) that prints "Hello, \<who-to-greet\>!" to the log
-and outputs the current time. It serves as a template for creating custom
-JavaScript-based GitHub Actions.
+A GitHub Action (JavaScript) that fetches SXT auth via a shared secret. Based on
+the hello-world-javascript-action template.
 
 ## Commands
 
@@ -32,8 +38,8 @@ npm run all             # Format + lint + test + coverage badge + package
 - **`dist/index.js`** — Rollup-bundled output (committed to repo). The action
   runs this file (`action.yml` → `runs.main: dist/index.js`). **Must be rebuilt
   (`npm run package`) after any source change.**
-- **`action.yml`** — Action metadata. Input: `who-to-greet`. Output: `time`.
-  Runtime: `node24`.
+- **`action.yml`** — Action metadata. Inputs: `sxt_auth_secret`,
+  `sxt_endpoint_url`. Output: `sxt-auth`. Runtime: `node24`.
 
 ## Testing
 
