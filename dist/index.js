@@ -32376,16 +32376,28 @@ async function run() {
       coreExports.setFailed('sxt_endpoint_url must be a non-empty string');
       return
     }
+    coreExports.info(`Fetching SXT auth from: ${endpointUrl}`);
     const response = await fetch(endpointUrl, {
       method: 'GET',
       headers: {
         'x-shared-secret': sharedSecret
       }
     });
-    const data = await response.json();
+    coreExports.info(`Response status: ${response.status} ${response.statusText}`);
+    const rawBody = await response.text();
+    coreExports.info(`Response body: ${rawBody}`);
+
+    let data;
+    try {
+      data = JSON.parse(rawBody);
+    } catch (parseError) {
+      coreExports.setFailed(`Failed to parse response as JSON: ${parseError.message}`);
+      return
+    }
     coreExports.setOutput('sxt-auth', JSON.stringify(data));
   } catch (error) {
     // Fail the workflow step if an error occurs
+    coreExports.error(error.stack || error.toString());
     coreExports.setFailed(error.message);
   }
 }
