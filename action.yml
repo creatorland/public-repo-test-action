@@ -4,10 +4,10 @@ author: GitHub Actions
 
 # Define your inputs here.
 inputs:
-  sxt_auth_secret:
+  sxt-auth-secret:
     description: Shared secret for SXT auth API
     required: true
-  sxt_endpoint_url:
+  sxt-endpoint-url:
     description: SXT auth endpoint URL
     required: true
 

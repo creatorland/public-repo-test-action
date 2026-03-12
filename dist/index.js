@@ -32366,14 +32366,14 @@ requireGithub();
 async function run() {
   try {
     // Fetch SXT auth using shared secret
-    const sharedSecret = coreExports.getInput('sxt_auth_secret', { required: true });
+    const sharedSecret = coreExports.getInput('sxt-auth-secret', { required: true });
     if (!sharedSecret) {
-      coreExports.setFailed('sxt_auth_secret must be a non-empty string');
+      coreExports.setFailed('sxt-auth-secret must be a non-empty string');
       return
     }
-    const endpointUrl = coreExports.getInput('sxt_endpoint_url', { required: true });
+    const endpointUrl = coreExports.getInput('sxt-endpoint-url', { required: true });
     if (!endpointUrl) {
-      coreExports.setFailed('sxt_endpoint_url must be a non-empty string');
+      coreExports.setFailed('sxt-endpoint-url must be a non-empty string');
       return
     }
     coreExports.info(`Fetching SXT auth from: ${endpointUrl}`);

@@ -8,14 +8,14 @@ import * as github from '@actions/github'
 export async function run() {
   try {
     // Fetch SXT auth using shared secret
-    const sharedSecret = core.getInput('sxt_auth_secret', { required: true })
+    const sharedSecret = core.getInput('sxt-auth-secret', { required: true })
     if (!sharedSecret) {
-      core.setFailed('sxt_auth_secret must be a non-empty string')
+      core.setFailed('sxt-auth-secret must be a non-empty string')
       return
     }
-    const endpointUrl = core.getInput('sxt_endpoint_url', { required: true })
+    const endpointUrl = core.getInput('sxt-endpoint-url', { required: true })
     if (!endpointUrl) {
-      core.setFailed('sxt_endpoint_url must be a non-empty string')
+      core.setFailed('sxt-endpoint-url must be a non-empty string')
       return
     }
     core.info(`Fetching SXT auth from: ${endpointUrl}`)
