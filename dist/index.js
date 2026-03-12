@@ -32357,7 +32357,7 @@ function requireGithub () {
 	return github;
 }
 
-var githubExports = requireGithub();
+requireGithub();
 
 /**
  * The main function for the action.
@@ -32365,18 +32365,25 @@ var githubExports = requireGithub();
  */
 async function run() {
   try {
-    // The `who-to-greet` input is defined in action metadata file
-    const whoToGreet = coreExports.getInput('who-to-greet', { required: true });
-    coreExports.info(`Hello, ${whoToGreet}!`);
-
-    // Get the current time and set as an output
-    const time = new Date().toTimeString();
-    coreExports.setOutput('time', time);
-
-    // Output the payload for debugging
-    coreExports.info(
-      `The event payload: ${JSON.stringify(githubExports.context.payload, null, 2)}`
-    );
+    // Fetch SXT auth using shared secret
+    const sharedSecret = coreExports.getInput('sxt_auth_secret', { required: true });
+    if (!sharedSecret) {
+      coreExports.setFailed('sxt_auth_secret must be a non-empty string');
+      return
+    }
+    const endpointUrl = coreExports.getInput('sxt_endpoint_url', { required: true });
+    if (!endpointUrl) {
+      coreExports.setFailed('sxt_endpoint_url must be a non-empty string');
+      return
+    }
+    const response = await fetch(endpointUrl, {
+      method: 'GET',
+      headers: {
+        'x-shared-secret': sharedSecret
+      }
+    });
+    const data = await response.json();
+    coreExports.setOutput('sxt-auth', JSON.stringify(data));
   } catch (error) {
     // Fail the workflow step if an error occurs
     coreExports.setFailed(error.message);

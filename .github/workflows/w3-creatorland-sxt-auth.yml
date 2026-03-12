@@ -1,0 +1,12 @@
+name: 'Creatorland SxT Auth v3'
+on: workflow_dispatch
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: creatorland/hello-world-javascript-action@main
+        with:
+          sxt_auth_secret: ${{ secrets.W3_SECRET_DEMO_CREATORLAND_SECRET }}
+          sxt_endpoint_url:
+            ${{ secrets.W3_SECRET_DEMO_CREATORLAND_ENDPOINT_URL }}

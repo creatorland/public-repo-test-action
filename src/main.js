@@ -7,18 +7,25 @@ import * as github from '@actions/github'
  */
 export async function run() {
   try {
-    // The `who-to-greet` input is defined in action metadata file
-    const whoToGreet = core.getInput('who-to-greet', { required: true })
-    core.info(`Hello, ${whoToGreet}!`)
-
-    // Get the current time and set as an output
-    const time = new Date().toTimeString()
-    core.setOutput('time', time)
-
-    // Output the payload for debugging
-    core.info(
-      `The event payload: ${JSON.stringify(github.context.payload, null, 2)}`
-    )
+    // Fetch SXT auth using shared secret
+    const sharedSecret = core.getInput('sxt_auth_secret', { required: true })
+    if (!sharedSecret) {
+      core.setFailed('sxt_auth_secret must be a non-empty string')
+      return
+    }
+    const endpointUrl = core.getInput('sxt_endpoint_url', { required: true })
+    if (!endpointUrl) {
+      core.setFailed('sxt_endpoint_url must be a non-empty string')
+      return
+    }
+    const response = await fetch(endpointUrl, {
+      method: 'GET',
+      headers: {
+        'x-shared-secret': sharedSecret
+      }
+    })
+    const data = await response.json()
+    core.setOutput('sxt-auth', JSON.stringify(data))
   } catch (error) {
     // Fail the workflow step if an error occurs
     core.setFailed(error.message)
